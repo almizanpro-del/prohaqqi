@@ -3,6 +3,7 @@ import { cookies } from "next/headers";
 import "./globals.css";
 import { I18nProvider, type Locale } from "@/lib/i18n";
 import { AuthProvider } from "@/lib/auth";
+import { CasePlatformProvider } from "@/lib/case-store";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Disclaimer from "@/components/Disclaimer";
@@ -46,6 +47,7 @@ export default function RootLayout({
       <body>
         <I18nProvider initialLocale={locale}>
           <AuthProvider>
+            <CasePlatformProvider>
             <a
               href="#main"
               className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:m-2 focus:rounded-lg focus:bg-white focus:p-3 focus:shadow"
@@ -58,6 +60,7 @@ export default function RootLayout({
               {children}
             </main>
             <Footer />
+            </CasePlatformProvider>
           </AuthProvider>
         </I18nProvider>
       </body>

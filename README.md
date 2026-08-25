@@ -43,6 +43,26 @@ Match `cliq_reference` + amount against your CliQ/bank statement first. Rejected
 | 6.2 | Full PostgreSQL schema incl. Phase 2/3 tables, pgvector RAG table, audit log | `supabase/migrations/00001_init.sql` |
 | 6.3 | RLS policies (owner CRUD, anon insert-only, approved-only public reads), private storage bucket | migration |
 
+## Case platform (multi-user) — migration 00003
+
+- **Shared cases**: `cases` + `case_access` (owner / family representative / assigned lawyer / viewer). Owners invite by email; invitees accept from their dashboard. RLS enforces membership.
+- **My Case dashboard** (`/dashboard`): single hub — case overview, hard-deadline countdowns, evidence log, access management, data export.
+- **Hard-deadline tracker**: `deadlines` rows auto-created per case (3y limitation Art. 932, 1y Fund window), color-escalating countdown (red ≤7d / amber ≤30d), Google Calendar links, `.ics` export, in-app notifications (`/notifications` + header bell).
+- **Evidence chain-of-custody**: browser computes SHA-256 before upload; `documents` stores hash + immutable timestamp metadata (byte storage lands with Storage integration).
+- **Lawyer verification**: `/join-as-lawyer` → hashed license upload → admin approves in `/admin` (auto-creates verified `lawyers` profile linked to the account).
+- **Audit trail**: `audit_write()` triggers on payments/documents/cases/case_access/drafts/stories/legal_guides/lawyer_applications/deletion_requests/complaints — canonical queryable log visible in the admin panel.
+- **Consent versioning**: register records terms/privacy/disclaimer versions (`user_consents.doc_type` + `doc_version`).
+- **PII before AI**: `src/lib/pii.ts` — DPA checklist, field whitelist, free-text scrubbing; `prepareLlmCall()` throws unless preconditions hold. See DECISIONS.md.
+
+**Admin bootstrap:** `insert into admins (user_id) values ('<uuid>');` then open `/admin` (payments confirm, story moderation, lawyer approvals, deletion requests, audit view).
+
+## Deliberately deferred (per PRD phasing)
+
+- Grok/AI intake, Drafting Mode citations panel, RAG pipeline (Phase 2 — schema already in place)
+- Lawyer directory/handoff UI, regulator dashboard (Phase 3)
+- Admin CMS UI for legal guides (editable via `legal_guides` table now)
+- Voice input/output — deferred to Phase 3 (see DECISIONS.md)
+
 ## Architecture notes
 
 - **Next.js 14 App Router + TypeScript + Tailwind** — cookie-based locale (`haqqi_locale`), server-rendered `<html lang/dir>` so RTL/LTR switch without client flash.

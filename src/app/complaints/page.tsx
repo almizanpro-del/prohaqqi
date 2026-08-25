@@ -6,6 +6,8 @@ import { buildLetter, type ComplaintData, type IssueKey, type RemedyKey } from "
 import { CBJ_CONTACT, INSURERS } from "@/lib/legal-data";
 import { RequireVerified } from "@/components/AuthGate";
 import { RequireCaseAccess } from "@/components/CaseGate";
+import FeedbackWidget from "@/components/FeedbackWidget";
+import CrisisNote from "@/components/CrisisNote";
 
 const EMPTY: ComplaintData = {
   target: "insurer",
@@ -185,6 +187,8 @@ export default function ComplaintsPage() {
             />
           </div>
 
+          <CrisisNote text={`${data.chronology} ${data.issues.includes("intimidation") ? "تهديد intimidation" : ""}`} />
+
           <div className="sm:col-span-2">
             <label htmlFor="rem" className="label">{t.complaints.requestedRemedy}</label>
             <select id="rem" value={data.remedy} onChange={(e) => set("remedy", e.target.value as RemedyKey)} className="input">
@@ -239,6 +243,9 @@ export default function ComplaintsPage() {
             className="w-full rounded-2xl border border-brand-200 bg-white p-6 font-serif text-[15px] leading-loose shadow-card focus:outline-none"
           />
           <p className="text-center text-xs text-stone-400 print:hidden">{t.complaints.printHint}</p>
+          <div className="flex justify-center print:hidden">
+            <FeedbackWidget context="draft" refId={`letter-${new Date().toISOString().slice(0, 10)}`} />
+          </div>
         </section>
       )}
 

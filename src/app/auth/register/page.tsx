@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth, type AuthError } from "@/lib/auth";
+import { recordAllConsents } from "@/lib/consent";
 
 export default function RegisterPage() {
   const { t } = useI18n();
@@ -39,6 +40,7 @@ export default function RegisterPage() {
               String(fd.get("email") ?? ""),
               String(fd.get("password") ?? "")
             );
+            await recordAllConsents(true);
             router.push("/auth/verify");
           } catch (err) {
             setError(ERR[(err as AuthError) ?? "generic"] ?? t.common.errorGeneric);

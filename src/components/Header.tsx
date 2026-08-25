@@ -5,11 +5,13 @@ import { usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { useI18n } from "@/lib/i18n";
 import { useAuth, useCaseAccess } from "@/lib/auth";
+import { useCasePlatform } from "@/lib/case-store";
 
 export default function Header() {
   const { t, locale, toggleLocale } = useI18n();
   const { user, ready, logout } = useAuth();
   const { paid } = useCaseAccess();
+  const { unreadCount: unread } = useCasePlatform();
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -19,7 +21,7 @@ export default function Header() {
   const links = [
     { href: "/", label: t.nav.home },
     { href: "/pricing", label: t.nav.pricing },
-    { href: "/rights", label: t.nav.rights },
+    { href: user?.verified ? "/dashboard" : "/rights", label: user?.verified ? t.nav.dashboard : t.nav.rights },
     { href: "/workflow", label: t.nav.workflow, lock: caseLocked },
     { href: "/complaints", label: t.nav.complaints, lock: caseLocked },
     { href: "/stories", label: t.nav.stories },
@@ -68,6 +70,20 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {user?.verified && (
+            <Link
+              href="/notifications"
+              aria-label={t.nav.notifications}
+              className="relative rounded-lg px-2 py-1.5 text-stone-600 hover:bg-stone-100"
+            >
+              🔔
+              {unread > 0 && (
+                <span className="absolute -top-0.5 end-0 grid h-4 min-w-4 place-items-center rounded-full bg-red-600 px-1 text-[10px] font-extrabold text-white">
+                  {unread}
+                </span>
+              )}
+            </Link>
+          )}
           <button
             type="button"
             onClick={toggleLocale}
@@ -115,6 +131,15 @@ export default function Header() {
                       className="block rounded-lg px-3 py-2 text-sm font-semibold text-amber-700 hover:bg-amber-50"
                     >
                       ⏳ {t.auth.verifyTitle}
+                    </Link>
+                  )}
+                  {user.verified && (
+                    <Link
+                      href="/join-as-lawyer"
+                      onClick={() => setMenu(false)}
+                      className="block rounded-lg px-3 py-2 text-sm font-semibold text-stone-700 hover:bg-brand-50"
+                    >
+                      ⚖️ {t.lawyerJoin.title}
                     </Link>
                   )}
                   <button
