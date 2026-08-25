@@ -26,7 +26,7 @@ const config: Config = {
       },
       fontFamily: {
         sans: [
-          "'Noto Sans Arabic'",
+          "'Cairo'",
           "'Tajawal'",
           "'Segoe UI'",
           "system-ui",
