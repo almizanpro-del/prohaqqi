@@ -224,7 +224,7 @@ function OverviewTab({ onExport }: { onExport: () => void }) {
         <CrisisNote text={crisisSeed} />
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className={`rounded-full px-3 py-1 text-xs font-bold ${paid ? "bg-green-100 text-green-800" : "bg-amber-100 text-amber-800"}`}>
+          <span className={`rounded-full px-3 py-1 text-xs font-bold ${paid ? "bg-brand-100 text-brand-800" : "bg-amber-100 text-amber-800"}`}>
             {paid ? t.platform.payChipPaid : t.platform.payChipLocked}
           </span>
           {!paid && (
@@ -328,7 +328,7 @@ function DeadlinesTab({ locale }: { locale: string }) {
                   <p className="mt-1 flex flex-wrap items-center gap-x-2 text-xs text-stone-500">
                     📆 {fmt(d.due_date, locale)}
                     {!done && <CountdownBadge daysLeft={left} />}
-                    {done && <span className="font-bold text-green-700">✓ {t.platform.dlDone}</span>}
+                    {done && <span className="font-bold text-brand-700">✓ {t.platform.dlDone}</span>}
                   </p>
                 </div>
                 <div className="flex flex-wrap items-center gap-2 print:hidden">
@@ -470,7 +470,7 @@ function AccessTab({ demo, myEmail }: { demo: boolean; myEmail: string }) {
             <span
               className={
                 a.status === "active"
-                  ? "text-green-700"
+                  ? "text-brand-700"
                   : a.status === "revoked"
                     ? "text-red-600 line-through"
                     : "text-amber-600"

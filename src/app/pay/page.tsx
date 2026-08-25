@@ -80,8 +80,8 @@ export default function PayPage() {
       <p className="mt-2 text-sm leading-relaxed text-stone-600">{t.pay.intro}</p>
 
       {paid && (
-        <div className="card mt-6 border-green-300 bg-green-50 text-center">
-          <p className="font-extrabold text-green-800">✓ {t.pay.stConfirmed}</p>
+        <div className="card mt-6 border-brand-300 bg-brand-50 text-center">
+          <p className="font-extrabold text-brand-800">✓ {t.pay.stConfirmed}</p>
           <Link href="/workflow" className="btn-primary mt-4">{t.pay.backToPlan}</Link>
         </div>
       )}
@@ -153,7 +153,7 @@ export default function PayPage() {
           {(submitted || (history && history.length > 0)) && mode === "supabase" && (
             <section className="card mt-6">
               {submitted && (
-                <p className="mb-4 rounded-xl bg-green-50 p-3 text-sm font-semibold text-green-800">
+                <p className="mb-4 rounded-xl bg-brand-50 p-3 text-sm font-semibold text-brand-800">
                   ✓ {t.pay.pendingMsg}
                 </p>
               )}
@@ -168,7 +168,7 @@ export default function PayPage() {
                         <span
                           className={
                             p.status === "confirmed"
-                              ? "font-bold text-green-700"
+                              ? "font-bold text-brand-700"
                               : p.status === "rejected"
                                 ? "font-bold text-red-700"
                                 : "font-bold text-amber-600"

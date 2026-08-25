@@ -23,7 +23,7 @@ export default function PricingPage() {
               <li key={x}>{x}</li>
             ))}
           </ul>
-          <p className="mt-5 rounded-xl bg-green-50 px-3 py-2 text-center text-sm font-extrabold text-green-700">
+          <p className="mt-5 rounded-xl bg-brand-50 px-3 py-2 text-center text-sm font-extrabold text-brand-700">
             0 {t.common.jod}
           </p>
         </div>

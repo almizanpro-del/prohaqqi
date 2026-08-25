@@ -78,7 +78,7 @@ function Inner() {
       <p className="mt-2 text-sm leading-relaxed text-stone-600">{t.lawyerJoin.subtitle}</p>
 
       {done ? (
-        <p className="mt-6 rounded-xl bg-green-50 p-4 text-sm font-bold text-green-800">✅ {t.lawyerJoin.success}</p>
+        <p className="mt-6 rounded-xl bg-brand-50 p-4 text-sm font-bold text-brand-800">✅ {t.lawyerJoin.success}</p>
       ) : (
         <form onSubmit={submit} className="card mt-6 grid gap-4">
           <label className="block">
@@ -121,7 +121,7 @@ function Inner() {
               <li key={a.id} className="card flex items-center justify-between !p-4 text-sm">
                 <span className="font-semibold text-stone-800">{a.full_name}</span>
                 <span className={
-                  a.status === "approved" ? "font-bold text-green-700" : a.status === "rejected" ? "font-bold text-red-700" : "font-bold text-amber-600"
+                  a.status === "approved" ? "font-bold text-brand-700" : a.status === "rejected" ? "font-bold text-red-700" : "font-bold text-amber-600"
                 }>
                   {a.status === "approved"
                     ? t.lawyerJoin.stApproved

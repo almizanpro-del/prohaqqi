@@ -142,7 +142,7 @@ export default function StoriesPage() {
         </p>
 
         {sent ? (
-          <p className="mt-5 rounded-xl bg-green-50 p-4 text-sm font-bold text-green-800">
+          <p className="mt-5 rounded-xl bg-brand-50 p-4 text-sm font-bold text-brand-800">
             ✅ {t.stories.submitSuccess}
           </p>
         ) : (

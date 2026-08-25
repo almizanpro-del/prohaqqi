@@ -28,14 +28,14 @@ export default function FeedbackWidget({ context, refId }: { context: "draft" | 
     <div className="flex items-center gap-3 text-xs text-stone-500 print:hidden">
       <span>{t.platform.feedbackPrompt}</span>
       {sent ? (
-        <span className="font-bold text-green-700">✓ {t.platform.feedbackThanks}</span>
+        <span className="font-bold text-brand-700">✓ {t.platform.feedbackThanks}</span>
       ) : (
         <span className="flex gap-1.5">
           <button
             type="button"
             onClick={() => send("up")}
             aria-label="👍"
-            className="rounded-lg border border-stone-300 px-2 py-1 hover:bg-green-50"
+            className="rounded-lg border border-stone-300 px-2 py-1 hover:bg-brand-50"
           >
             👍
           </button>
