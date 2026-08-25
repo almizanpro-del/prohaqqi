@@ -1,0 +1,74 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-sand-50 text-stone-800 antialiased;
+}
+
+@layer components {
+  .container-page {
+    @apply mx-auto w-full max-w-5xl px-4 sm:px-6;
+  }
+  .card {
+    @apply rounded-2xl border border-brand-100 bg-white p-6 shadow-card;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-brand-600 px-5 py-3 text-sm font-bold text-white transition hover:bg-brand-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 disabled:opacity-50;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-brand-200 bg-white px-5 py-3 text-sm font-bold text-brand-700 transition hover:bg-brand-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-700 disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-stone-600 transition hover:bg-stone-100 hover:text-stone-900;
+  }
+  .label {
+    @apply mb-1 block text-sm font-semibold text-stone-700;
+  }
+  .input {
+    @apply w-full rounded-xl border border-stone-300 bg-white px-3 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-200;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full border border-stone-300 px-3 py-1 text-xs font-medium text-stone-600 transition hover:border-brand-400 hover:text-brand-700;
+  }
+  .chip-active {
+    @apply border-brand-600 bg-brand-600 text-white hover:text-white;
+  }
+  .prose-ar {
+    @apply leading-relaxed;
+  }
+}
+
+/* Print: only the letter area */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  #letter-print,
+  #letter-print * {
+    visibility: visible !important;
+  }
+  #letter-print {
+    position: absolute;
+    inset-inline-start: 0;
+    top: 0;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border: none !important;
+    box-shadow: none !important;
+    white-space: pre-wrap;
+    direction: rtl;
+    text-align: right;
+    font-size: 12pt;
+    line-height: 1.9;
+  }
+}
