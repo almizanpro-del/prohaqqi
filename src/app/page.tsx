@@ -6,10 +6,8 @@ import { CountUp, Reveal } from "@/components/motion";
 
 /* Decorative floating chips — labels only, no invented case data */
 const FLOATERS = [
-  { icon: "📄", key_ar: "محضر الشرطة", cls: "top-[16%] start-[6%]", delay: "0s" },
-  { icon: "⏱️", key_ar: "السداد بأيام عمل", cls: "top-[58%] start-[3%]", delay: "1.4s" },
-  { icon: "⚖️", key_ar: "التقادم ٣ سنوات", cls: "top-[24%] end-[5%]", delay: ".7s" },
-  { icon: "🛡️", key_ar: "بياناتك محمية", cls: "top-[64%] end-[8%]", delay: "2.1s" },
+  { icon: "📄", ar: "محضر الشرطة", en: "Police report", cls: "top-[14%] start-[5%]", delay: "0s" },
+  { icon: "⚖️", ar: "التقادم ٣ سنوات", en: "3-year limitation", cls: "top-[18%] end-[5%]", delay: "1.2s" },
 ];
 
 export default function HomePage() {
@@ -35,11 +33,11 @@ export default function HomePage() {
             key={f.icon}
             aria-hidden
             dir={dir}
-            className={`pointer-events-none absolute z-10 hidden select-none items-center gap-2 rounded-2xl border border-white/60 bg-white/70 px-4 py-2.5 text-xs font-bold text-brand-800 shadow-float backdrop-blur-md md:flex ${f.cls}`}
-            style={{ animation: `float ${6 + Number(f.delay)}s ease-in-out infinite`, animationDelay: f.delay }}
+            className={`pointer-events-none absolute z-10 hidden select-none items-center gap-2 rounded-2xl border border-white/60 bg-white/70 px-4 py-2.5 text-xs font-bold text-brand-800 shadow-float backdrop-blur-md lg:flex ${f.cls}`}
+            style={{ animation: `float 7s ease-in-out infinite`, animationDelay: f.delay }}
           >
             <span className="text-base">{f.icon}</span>
-            {locale === "ar" ? f.key_ar : f.icon === "📄" ? "Police report" : f.icon === "⏱️" ? "Payment in working days" : f.icon === "⚖️" ? "3-year limitation" : "Your data protected"}
+            {locale === "ar" ? f.ar : f.en}
           </div>
         ))}
 
@@ -112,9 +110,9 @@ export default function HomePage() {
       </section>
 
       {/* ===================== BAD-PRACTICE MARQUEE ===================== */}
-      <section aria-hidden className="-my-10 select-none py-2">
-        <div className="overflow-hidden border-y border-brand-100 bg-white/60 py-4 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-          <div className="marquee-track flex w-max items-center gap-10 animate-marquee hover:[animation-play-state:paused]">
+      <section aria-hidden className="select-none">
+        <div className="overflow-hidden border-y border-brand-100 bg-white/70 py-4 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
+          <div className="flex w-max items-center gap-10 animate-marquee will-change-transform hover:[animation-play-state:paused]">
             {[...badPractices, ...badPractices].map((p, i) => (
               <span key={`${p}-${i}`} className="flex items-center gap-3 whitespace-nowrap text-sm font-bold text-stone-400" dir="auto">
                 <span className="line-through decoration-red-400/70 decoration-2">{p}</span>
@@ -251,23 +249,23 @@ export default function HomePage() {
       <section aria-labelledby="stories-teaser">
         <div className="grid items-center gap-8 md:grid-cols-2">
           <Reveal dir="left">
-            <div className="relative h-64">
+            <div className="relative mx-auto h-60 max-w-sm">
               {[0, 1, 2].map((i) => (
                 <div
                   key={i}
                   aria-hidden
-                  className={`absolute inset-x-6 top-6 h-44 rounded-3xl border border-brand-100 bg-white p-6 shadow-float ${
+                  className={`absolute inset-x-4 top-4 h-40 rounded-3xl border border-brand-100 bg-white p-5 shadow-float ${
                     i === 2 ? "!inset-x-0 top-0 z-20" : ""
                   }`}
                   style={{
-                    transform: `rotate(${(i - 1) * 4}deg) translateY(${i * 10}px)`,
+                    transform: `rotate(${(i - 1) * 4}deg) translateY(${i * 8}px)`,
                     zIndex: i,
                     animation: `float-slow ${8 + i * 1.5}s ease-in-out infinite`,
                     animationDelay: `${i * 0.6}s`,
                     opacity: i === 2 ? 1 : 0.55,
                   }}
                 >
-                  <div className="mb-3 h-3 w-24 rounded-full bg-brand-100" />
+                  <div className="mb-3 h-3 w-20 rounded-full bg-brand-100" />
                   <div className="mb-2 h-2.5 w-full rounded-full bg-stone-100" />
                   <div className="mb-2 h-2.5 w-5/6 rounded-full bg-stone-100" />
                   <div className="h-2.5 w-2/3 rounded-full bg-brand-50" />

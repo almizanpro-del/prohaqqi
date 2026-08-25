@@ -1,10 +1,17 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useEffect, useLayoutEffect, useRef, useState, type ReactNode } from "react";
+
+const useIsoEffect = typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 type Dir = "up" | "left" | "right";
 
-/** Scroll-triggered entrance animation (IntersectionObserver). */
+/**
+ * Scroll-triggered entrance — bulletproof:
+ *  1. Server-rendered content is VISIBLE (no-JS can never hide content).
+ *  2. JS arms the hidden state pre-paint, then IntersectionObserver reveals.
+ *  3. A 2.5s failsafe forces visibility even if IO never fires.
+ */
 export function Reveal({
   children,
   delay = 0,
@@ -17,31 +24,45 @@ export function Reveal({
   className?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
 
-  useEffect(() => {
+  useIsoEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
-      },
-      { threshold: 0.15, rootMargin: "0px 0px -40px 0px" }
-    );
-    io.observe(el);
-    return () => io.disconnect();
+
+    el.classList.add("reveal-armed");
+    if (delay > 0) el.style.transitionDelay = `${delay}ms`;
+
+    let done = false;
+    const show = () => {
+      if (done) return;
+      done = true;
+      el.classList.add("is-visible");
+      io?.disconnect();
+      clearTimeout(failsafe);
+    };
+
+    const io =
+      typeof IntersectionObserver !== "undefined"
+        ? new IntersectionObserver(
+            ([entry]) => entry.isIntersecting && show(),
+            { threshold: 0.1, rootMargin: "0px 0px -30px 0px" }
+          )
+        : null;
+
+    io?.observe(el);
+    const failsafe = window.setTimeout(show, 2500);
+
+    return () => {
+      io?.disconnect();
+      clearTimeout(failsafe);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <div
       ref={ref}
-      className={`reveal ${dir === "left" ? "reveal-left" : dir === "right" ? "reveal-right" : ""} ${
-        visible ? "is-visible" : ""
-      } ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      className={`reveal ${dir === "left" ? "reveal-left" : dir === "right" ? "reveal-right" : ""} ${className}`}
     >
       {children}
     </div>
@@ -71,23 +92,34 @@ export function CountUp({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting || started.current) return;
-        started.current = true;
-        const t0 = performance.now();
-        const tick = (t: number) => {
-          const p = Math.min(1, (t - t0) / duration);
-          const eased = 1 - Math.pow(1 - p, 3);
-          setVal(Math.round(to * eased));
-          if (p < 1) requestAnimationFrame(tick);
-        };
-        requestAnimationFrame(tick);
-      },
-      { threshold: 0.5 }
-    );
+
+    const run = () => {
+      if (started.current) return;
+      started.current = true;
+      const t0 = performance.now();
+      const tick = (t: number) => {
+        const p = Math.min(1, (t - t0) / duration);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setVal(Math.round(to * eased));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+
+    if (typeof IntersectionObserver === "undefined") {
+      run();
+      return;
+    }
+    const io = new IntersectionObserver(([entry]) => entry.isIntersecting && run(), {
+      threshold: 0.5,
+    });
     io.observe(el);
-    return () => io.disconnect();
+    // failsafe: if IO misses (e.g. full-page capture), run shortly after mount
+    const t = window.setTimeout(run, 3000);
+    return () => {
+      io.disconnect();
+      clearTimeout(t);
+    };
   }, [to, duration]);
 
   let formatted: string;

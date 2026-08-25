@@ -8,10 +8,13 @@
 
 html {
   scroll-behavior: smooth;
+  /* reveal translations must never create a horizontal scrollbar */
+  overflow-x: clip;
 }
 
 body {
   @apply bg-sand-50 text-stone-800 antialiased;
+  overflow-x: clip;
 }
 
 ::selection {
@@ -19,28 +22,31 @@ body {
   color: theme("colors.brand.950");
 }
 
-/* Scroll-reveal (IntersectionObserver toggles .is-visible) */
+/*
+ * Scroll-reveal — fail-safe by design:
+ * content is VISIBLE by default; JS arms the hidden state only after
+ * hydration, and a timeout forces it visible even if IO never fires.
+ */
 .reveal {
+  position: relative;
+}
+.reveal-armed {
   opacity: 0;
-  transform: translateY(26px);
+  transform: translateY(22px);
   transition:
-    opacity 0.8s cubic-bezier(0.2, 0.65, 0.25, 1),
-    transform 0.8s cubic-bezier(0.2, 0.65, 0.25, 1);
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.2, 0.65, 0.25, 1);
   will-change: opacity, transform;
 }
-.reveal.is-visible {
+.reveal-armed.reveal-left {
+  transform: translateX(-24px);
+}
+.reveal-armed.reveal-right {
+  transform: translateX(24px);
+}
+.reveal-armed.is-visible {
   opacity: 1;
-  transform: translateY(0);
-}
-.reveal-left {
-  transform: translateX(-32px);
-}
-.reveal-right {
-  transform: translateX(32px);
-}
-.reveal-left.is-visible,
-.reveal-right.is-visible {
-  transform: translateX(0);
+  transform: translate(0, 0);
 }
 
 /* Shine sweep for hero CTAs */
