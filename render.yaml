@@ -1,0 +1,29 @@
+services:
+  - type: web_service
+    name: prohaqqi
+    runtime: node
+    plan: starter
+    region: oregon
+    repo: https://github.com/almizanpro-del/prohaqqi.git
+    branch: main
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+        value: https://prohaqqi.onrender.com
+      # Add these via Render dashboard after first deploy (they contain secrets):
+      # - key: NEXT_PUBLIC_SUPABASE_URL
+      #   sync: false
+      # - key: NEXT_PUBLIC_SUPABASE_ANON_KEY
+      #   sync: false
+      # - key: SUPABASE_SERVICE_ROLE_KEY
+      #   sync: false
+      # - key: NEXT_PUBLIC_CLIQ_ALIAS
+      #   sync: false
+      # - key: NEXT_PUBLIC_SUPPORT_EMAIL
+      #   sync: false
