@@ -74,20 +74,19 @@ body {
   inset-inline-start: 130%;
 }
 
-/* Animated gradient text */
+/* Animated gradient text — calmer, brand-anchored (no cyan) */
 .gradient-text {
   background: linear-gradient(
     100deg,
-    theme("colors.brand.600"),
-    theme("colors.sky.500"),
-    theme("colors.cyan.400"),
-    theme("colors.brand.600")
+    theme("colors.brand.700"),
+    theme("colors.brand.500"),
+    theme("colors.brand.700")
   );
   background-size: 220% auto;
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  animation: gradient-x 7s ease infinite;
+  animation: gradient-x 12s ease infinite;
 }
 @keyframes gradient-x {
   to {
@@ -135,6 +134,89 @@ body {
   }
   .prose-ar {
     @apply leading-relaxed;
+  }
+
+  /* ================================
+     Landing page — premium primitives
+     Used by /src/app/page.tsx only.
+     Other pages are unaffected.
+     ================================ */
+
+  /* Refined display heading — tighter tracking, controlled line-height */
+  .lp-display {
+    font-family: theme("fontFamily.display");
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    line-height: 1.05;
+  }
+
+  /* Quiet, single-color "eyebrow" label */
+  .lp-eyebrow {
+    @apply inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-700;
+  }
+
+  /* Calm filled button — replaces the bouncier gradient one on the hero */
+  .lp-btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl bg-ink-900 px-5 py-3 text-sm font-semibold text-white shadow-soft-sm transition duration-200 ease-smooth hover:bg-ink-800 hover:shadow-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-900;
+  }
+  .lp-btn-primary-lg {
+    @apply px-6 py-3.5 text-[15px] rounded-xl;
+  }
+
+  /* Ghost button that pairs with lp-btn-primary */
+  .lp-btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl border border-ink-200 bg-white px-5 py-3 text-sm font-semibold text-ink-800 transition duration-200 ease-smooth hover:border-ink-300 hover:bg-ink-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ink-700;
+  }
+  .lp-btn-ghost-lg {
+    @apply px-6 py-3.5 text-[15px] rounded-xl;
+  }
+
+  /* Refined card — flat, hairline border, soft hover lift */
+  .lp-card {
+    @apply rounded-2xl border border-ink-100 bg-white p-6 shadow-soft-sm transition duration-200 ease-smooth;
+  }
+  .lp-card-hover {
+    @apply hover:-translate-y-0.5 hover:border-ink-200 hover:shadow-soft;
+  }
+
+  /* Subtle grid background used on the hero */
+  .lp-grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(15, 19, 28, 0.045) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(15, 19, 28, 0.045) 1px, transparent 1px);
+    background-size: 56px 56px;
+    background-position: -1px -1px;
+  }
+
+  /* Subtle dot pattern for side panels */
+  .lp-dots {
+    background-image: radial-gradient(rgba(15, 19, 28, 0.10) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+
+  /* The "panel" surface — light card on sand background */
+  .lp-panel {
+    @apply rounded-2xl border border-ink-100 bg-white p-6 shadow-soft-sm;
+  }
+
+  /* Soft dark surface for the "key numbers" section */
+  .lp-panel-dark {
+    @apply rounded-3xl bg-ink-900 text-white shadow-soft-lg;
+  }
+
+  /* Hairline divider */
+  .lp-divider {
+    @apply h-px w-full bg-ink-100;
+  }
+
+  /* Sticky-step pill used in the workflow section */
+  .lp-step {
+    @apply flex items-start gap-4 rounded-xl border border-ink-100 bg-white p-5 transition duration-200 ease-smooth hover:border-ink-200 hover:shadow-soft-sm;
+  }
+
+  /* Tag — used for trust labels & inline meta */
+  .lp-tag {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-ink-200 bg-white px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wider text-ink-600;
   }
 }
 
